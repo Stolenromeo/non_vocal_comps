@@ -2,7 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import Other from './Other'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+ReactDOM.render(
+	<Router>
+		<Switch>
+			<Route path='/other' component={Other}/>
+			<Route path="/" component={App} />
+		</Switch>
+	</Router>
+, document.getElementById('root'));

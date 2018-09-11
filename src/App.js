@@ -8,18 +8,28 @@ class App extends Component {
     super()
 
     this.state = {
-      user: null
+      user: false
     }
+			{/* -------React - Class(.bind)-------- */}
 
     this.login = this.login.bind(this)
+    this.loggedIn = this.loggedIn.bind(this)
   }
 
-  getUserInfo = () => {
-    axios.get('/api/currentUser').then(resp => {
-      console.log('2222222', resp.data)
-      this.setState({
-        user: resp.data
-      })
+  pushTomatch = ()=>{
+    /*-------React - Routing(match object)--------*/
+    if(this.props.match.path !== '/other'){
+      this.props.history.push('/other')
+    }
+  }
+
+  loggedIn(){
+    /*---------Server-REST(queries)---------*/
+    axios.get('/api/?user=yessir').then(resp => {
+      console.log(resp.data.resp)
+      if(resp.data.value){
+         this.setState({ user:true})
+      }
     })
   }
 
@@ -41,9 +51,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <button onClick={this.login}>Login</button>
-        <button onClick={this.getUserInfo}>Get user info</button>
-        {this.state.user && <div>{JSON.stringify(this.state.user)}</div>}
+        {this.state.user?
+          <button onClick={this.pushTomatch}>go to next page</button>
+        :
+          <div>
+            <button onClick={this.login}>You may login here.</button>
+            <button onClick={this.loggedIn}>Click this button to see if you're here.</button>
+          </div>
+        }
       </div>
     );
   }

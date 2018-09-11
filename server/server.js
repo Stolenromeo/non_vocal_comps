@@ -6,13 +6,13 @@ const express = require('express'),
 	  require('dotenv').config()
 
 const app = express()
-const port = 3007;
+const port = process.env.SERVER_PORT;
 
 massive(process.env.CONNECTION_STRING).then(db=>{
 app.set('db', db)
 console.log('db connect success!')
 })
-
+/*---------Top Level MiddleWare--------*/
 app.use(session({
 	secret: process.env.SESSION_SECRET,
 	resave: false,
@@ -21,14 +21,11 @@ app.use(session({
 
 app.use(bodyPar.json())
 
+
+/*-------------Request Level MiddleWare-------------*/
 app.get('/auth/callback', AuthCtrl.auth)
-
-app.get('/api/currentUser', (req, res)=>{
-	console.log(req.session.user)
-	res.send(req.session.user)
-
-})
+app.get('/api', AuthCtrl.loginCheck)
 
 app.listen(port, ()=> {
-	console.log('Narwal, Narwal, swimming in the Ocean', port)
+	console.log('Gotta be done', port)
 })
